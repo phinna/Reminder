@@ -44,7 +44,7 @@ def open_ith_wks(wksList, i):
 class GetFellowWorkersInfo(object):
 
     @classmethod
-    def read_data_from_PPTSpreadsheet(index):
+    def read_data_from_PPTSpreadsheet(cls,index):
         url = ("https://docs.google.com/spreadsheets/d/"
             "1AYTcSf6Ew6RMd5oHYD8Mc5LWjhdZ_zpiP3daKo7aBuY/edit#gid=0")
         wksList = access_spreadsheet(url)
@@ -80,11 +80,7 @@ class GetFellowWorkersInfo(object):
                                     row[1].capitalize(), row[2]))
         return fellowWorkers
 
-    # @staticmethod
-    # def get_info_from_db():
-    #     names = GetFellowWorkersInfo.get_names_for_sunday()
-    #     emails = PPW.DBManager.get_email(DATABASE, TABLE, names)
-    #     return emails
+
 
 
 
