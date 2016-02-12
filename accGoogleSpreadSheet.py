@@ -15,7 +15,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 GCREDENTIALS = 'gspread_cred.json'
 CREDENTIALS_PATH = os.path.join(basedir, GCREDENTIALS)
-DATABASE = 'ptt.db'
+DATABASE = 'ppt.db'
 TABLE = 'contact'
 
 def get_credentialg():
@@ -36,17 +36,20 @@ def access_spreadsheet(url):
     wksList = sh.worksheets()
     return wksList
 
-def read_data_from_PPTSpreadsheet(index):
-    url = ("https://docs.google.com/spreadsheets/d/"
-        "1AYTcSf6Ew6RMd5oHYD8Mc5LWjhdZ_zpiP3daKo7aBuY/edit#gid=0")
-    wksList = access_spreadsheet(url)
-    wks = open_ith_wks(wksList, index)
-    return wks
+
 
 def open_ith_wks(wksList, i):
     return wksList[i]
 
 class GetFellowWorkersInfo(object):
+
+    @classmethod
+    def read_data_from_PPTSpreadsheet(index):
+        url = ("https://docs.google.com/spreadsheets/d/"
+            "1AYTcSf6Ew6RMd5oHYD8Mc5LWjhdZ_zpiP3daKo7aBuY/edit#gid=0")
+        wksList = access_spreadsheet(url)
+        wks = open_ith_wks(wksList, index)
+        return wks
 
     @staticmethod
     def get_next_sunday():
@@ -57,7 +60,7 @@ class GetFellowWorkersInfo(object):
 
     @staticmethod
     def get_names_for_sunday():
-        worksheet = read_data_from_PPTSpreadsheet(0)
+        worksheet = GetFellowWorkersInfo.read_data_from_PPTSpreadsheet(0)
         nextSunDate = GetFellowWorkersInfo.get_next_sunday()
         cell = worksheet.find(nextSunDate)
         rowNum = cell.row
@@ -67,20 +70,21 @@ class GetFellowWorkersInfo(object):
         propresenter = worksheet.cell(rowNum + 3, colNum).value
         return [rightLaptop, leftLaptop, propresenter]
 
-    @staticmethod
-    def read_from_contact():
+    @classmethod
+    def read_from_contact(cls):
         worksheet = read_data_from_PPTSpreadsheet(2)
         fellowWorkers = []
         for i in range(2, len(worksheet.col_values(1))+1):
             row = worksheet.row_values(i)
-            fellowWorkers.append((row[0].rstrip(), row[1], row[2]))
+            fellowWorkers.append((row[0].rstrip().capitalize(), 
+                                    row[1].capitalize(), row[2]))
         return fellowWorkers
 
-    @staticmethod
-    def get_info_from_db():
-        names = GetFellowWorkersInfo.get_names_for_sunday()
-        emails = PPW.DBManager.get_email(DATABASE, TABLE, names)
-        return emails
+    # @staticmethod
+    # def get_info_from_db():
+    #     names = GetFellowWorkersInfo.get_names_for_sunday()
+    #     emails = PPW.DBManager.get_email(DATABASE, TABLE, names)
+    #     return emails
 
 
 

@@ -24,7 +24,7 @@ class DBManager(object):
         with sqlite3.connect(database) as connection:
             c = connection.cursor()
             for name in names:
-                name = name.split()[0]
+                name = name.split()[0].capitalize()
                 c.execute("SELECT email from %s WHERE firstName='%s'" \
                                                             % (table, name))
 
