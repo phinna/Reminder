@@ -72,11 +72,11 @@ class GetFellowWorkersInfo(object):
 
     @classmethod
     def read_from_contact(cls):
-        worksheet = read_data_from_PPTSpreadsheet(2)
+        worksheet = GetFellowWorkersInfo.read_data_from_PPTSpreadsheet(2)
         fellowWorkers = []
         for i in range(2, len(worksheet.col_values(1))+1):
             row = worksheet.row_values(i)
-            fellowWorkers.append((row[0].rstrip().capitalize(), 
+            fellowWorkers.append((row[0].rstrip().capitalize(),
                                     row[1].capitalize(), row[2]))
         return fellowWorkers
 
